@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cetakan Hasil Pendeteksian Katarak</title>
+  <style>
+    .keterangan{
+        text-align: left;
+        font-style:unset;
+        font-size: 20px;
+    }
+    .logo{
+        width: 40%;
+        align-content: flex-start;
+    }
+    .underline-header {
+    border-bottom: 5px solid black;
+    padding-bottom: 5px;
+    text-align: center;
+    }
+    .tanggal{
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+
+    <h1 class="underline-header"><img class="logo" src="/static/assets/img/logo.png">   Hasil Pendeteksian Katarak</h1>
+  <table>
+    <tr>
+      <td class="keterangan">Nama Lengkap</td>
+      <td class="keterangan">: &nbsp;</td>
+      <td class="keterangan">{{ riwayat.nama }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">No HP</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ riwayat.nohp }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Alamat</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ riwayat.alamat }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Tanggal Lahir</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ riwayat.tlahir }}</td>
+    </tr>
+    <tr class="keterangan">
+      <td class="keterangan">Tanggal Screening</td>
+      <td>:</td>
+      <td>{{ riwayat.tscreen }}</td>
+    </tr>
+    <tr class="keterangan">
+      <td class="keterangan">Hasil</td>
+      <td>:</td>
+      <td>{{ riwayat.diagnosa }}</td>
+    </tr>
+    <tr style="font-size: 20px;">
+      <td colspan="4">&nbsp;</td>
+      <td style="width: 400px;"><p class="tanggal">Tanggal Cetak: {{ current_date }}</p></td>
+    </tr>
+  </table>
+  <script>
+    window.print();
+  </script>
+</body>
+</html>
