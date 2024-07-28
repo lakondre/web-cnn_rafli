@@ -65,8 +65,8 @@ class User(db.Model):
 
 class Riwayat(db.Model):
     id_riwayat = db.Column(db.Integer, primary_key=True)
-    id_pasien = db.Column(db.Integer, db.ForeignKey('tb_pasien.id_pasien'), nullable=False)
-    nama = db.Column(db.String(100), nullable=False)
+    NIK = db.Column(db.Integer, db.ForeignKey('tb_pasien.id_pasien'), nullable=False)
+    namapas = db.Column(db.String(100), nullable=False)
     nohp = db.Column(db.String(20), nullable=False)
     tlahir = db.Column(db.String(10), nullable=False)
     tscreen = db.Column(db.String(10), nullable=False)
@@ -76,13 +76,29 @@ class Riwayat(db.Model):
 
 
 class Pasien(db.Model):
-    id_pasien = db.Column(db.Integer, primary_key=True)
-    nama = db.Column(db.String(100), nullable=False)
+    NIK = db.Column(db.String(16), primary_key=True)
+    namapas = db.Column(db.String(50), nullable=False)
+    jk = db.Column(db.String(10), nullable=False)
+    tlahir = db.Column(db.String(10), nullable=False)
+    tempatlahir = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(25), nullable=False)
+    agama = db.Column(db.String(50), nullable=False)
+    pekerjaan = db.Column(db.String(50), nullable=False)
+    pendidikan = db.Column(db.String(50), nullable=False)
+    keluarga = db.Column(db.String(50), nullable=False)
+    namakel = db.Column(db.String(50), nullable=False)
+    pekerjaankel = db.Column(db.String(50), nullable=False)
+    nohp = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    provinsi = db.Column(db.String(50), nullable=False)
+    kota = db.Column(db.String(50), nullable=False)
+    kec = db.Column(db.String(50), nullable=False)
+    desa = db.Column(db.String(50), nullable=False)
     alamat = db.Column(db.String(200), nullable=False)
-    nohp = db.Column(db.String(20), nullable=False)
-    tlahir = db.Column(db.Date, nullable=False)
+    tdaftar = db.Column(db.Date, nullable=False)
 
-    __tablename__ = 'tb_pasien'
+
+    __tablename__ = 'pasien'
 
 
 
@@ -146,7 +162,11 @@ def dokter():
     level_user='Dokter'
     return render_template('/dokter/index.html', username=username, level=session['level'], riwayat_count=riwayat_count, doctor_name=doctor_name, level_user=level_user)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def main():
+    return render_template('/home.html')
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -167,10 +187,10 @@ def login():
             return '''
                 <script>
                 alert("Username atau Password salah!");
-                window.location.href = "/";
+                window.location.href = "/login";
             </script>
             '''
-    return render_template('/index.html')
+    return render_template('/login.html')
 
 
 @app.route("/classification", methods=['GET', 'POST'])
@@ -307,16 +327,18 @@ def pasien():
     level=session['level']
     level_user='Administrator'
     try:
-        cursor.execute("SELECT * FROM tb_pasien")
+        cursor.execute("SELECT * FROM pasien")
         pasiens = cursor.fetchall()
         output = []
         for pasien in pasiens:
             output.append({
-                'id_pasien':pasien[0],
-                'nama': pasien[1],
-                'alamat': pasien[2],
-                'nohp': pasien[3],
-                'tlahir': pasien[4]
+                'NIK':pasien[0],
+                'namapas': pasien[1],
+                'jk' : pasien[2],
+                'kota': pasien[15],
+                'nohp': pasien[12],
+                'tlahir': pasien[3],
+                'tempatlahir': pasien[4],
             })
         return render_template("/admin/pasien.html", pasiens=output,  doctor_name=doctor_name, level=level, level_user=level_user)
     except mysql.connector.Error as err:
@@ -329,74 +351,25 @@ def pasien1():
     user = User.query.filter_by(username=username).first()
     doctor_name = user.nm_user
     level=session['level']
-    level_user='Operator'
+    level_user='Administrator'
     try:
-        cursor.execute("SELECT * FROM tb_pasien")
+        cursor.execute("SELECT * FROM pasien")
         pasiens = cursor.fetchall()
         output = []
         for pasien in pasiens:
             output.append({
-                'id_pasien':pasien[0],
-                'nama': pasien[1],
-                'alamat': pasien[2],
-                'nohp': pasien[3],
-                'tlahir': pasien[4]
+                'NIK':pasien[0],
+                'namapas': pasien[1],
+                'jk' : pasien[2],
+                'kota': pasien[15],
+                'nohp': pasien[12],
+                'tlahir': pasien[3],
+                'tempatlahir': pasien[4],
             })
-        return render_template("/operator/pasien.html", pasiens=output,  doctor_name=doctor_name, level=level, level_user=level_user)
+        return render_template("/admin/pasien.html", pasiens=output,  doctor_name=doctor_name, level=level, level_user=level_user)
     except mysql.connector.Error as err:
         return "error fetching data"
 
-@app.route("/tambahpasien", methods=["GET", "POST"])
-def tambahpasien():
-    username = session['username']
-    user = User.query.filter_by(username=username).first()
-    doctor_name = user.nm_user
-    level=session['level']
-    level_user='Administrator'
-    if request.method == 'POST':
-        nama = request.form.get('nama')
-        alamat = request.form.get('alamat')
-        nohp = request.form.get('nohp')
-        tlahir = request.form.get('tlahir')
-
-        pasien = Pasien(nama=nama, alamat=alamat, nohp=nohp, tlahir=tlahir)
-        db.session.add(pasien)
-        db.session.commit()
-
-        return '''
-        <script>
-            alert("Data berhasil disimpan!");
-            window.location.href = "/pasien";
-        </script>
-        '''
-    pasien = Pasien.query.all()
-    return render_template("/admin/tambahpasien.html", pasien=pasien, doctor_name=doctor_name, level=level, level_user=level_user)
-
-@app.route("/tambahpasien1", methods=["GET", "POST"])
-def tambahpasien1():
-    username = session['username']
-    user = User.query.filter_by(username=username).first()
-    doctor_name = user.nm_user
-    level=session['level']
-    level_user='Administrator'
-    if request.method == 'POST':
-        nama = request.form.get('nama')
-        alamat = request.form.get('alamat')
-        nohp = request.form.get('nohp')
-        tlahir = request.form.get('tlahir')
-
-        pasien = Pasien(nama=nama, alamat=alamat, nohp=nohp, tlahir=tlahir)
-        db.session.add(pasien)
-        db.session.commit()
-
-        return '''
-        <script>
-            alert("Data berhasil disimpan!");
-            window.location.href = "/pasien";
-        </script>
-        '''
-    pasien = Pasien.query.all()
-    return render_template("/operator/tambahpasien.html", pasien=pasien, doctor_name=doctor_name, level=level, level_user=level_user)
 
 @app.route('/hapusriwayat/<int:id_riwayat>', methods=['DELETE'])
 def hapusriwayat(id_riwayat):
@@ -442,11 +415,6 @@ def hapuspasien1(id_pasien):
 @app.route('/editpasien/<int:id_pasien>', methods=['GET', 'POST'])
 @levels_required('Admin')
 def editpasien(id_pasien):
-    username = session['username']
-    user = User.query.filter_by(username=username).first()
-    doctor_name = user.nm_user
-    level=session['level']
-    level_user='Administrator'
     try:
         cnx = mysql.connector.connect(
             user='root',
@@ -457,13 +425,34 @@ def editpasien(id_pasien):
         cur = cnx.cursor()
         if request.method == 'POST':
             # Get the updated values from the form
-            nama = request.form['nama']
-            alamat = request.form['alamat']
-            nohp = request.form['nohp']
+            namapas = request.form['namapas']
+            jk = request.form['jk']
             tlahir = request.form['tlahir']
+            tempatlahir = request.form['tempatlahir']
+            status = request.form['status']
+            agama = request.form['agama']
+            pekerjaan = request.form['pekerjaan']
+            pendidikan = request.form['pendidikan']
+            keluarga = request.form['keluarga']
+            namakel = request.form['namakel']
+            pekerjaankel = request.form['pekerjaankel']
+            nohp = request.form['nohp']
+            email = request.form['email']
+            provinsi = request.form['provinsi']
+            kota = request.form['kota']
+            kec = request.form['kec']
+            desa = request.form['desa']
+            alamat = request.form['alamat']
+            tdaftar = request.form['tdaftar']
+            unit = request.form['unit']
+            dokter = request.form['dokter']
+            jam = request.form['jam']
+            bayar = request.form['bayar']
+            nokartu = request.form['nokartu']
+            pesan = request.form['pesan']
 
             # Update the user data in the database
-            cur.execute("UPDATE tb_pasien SET nama = %s, alamat = %s, nohp = %s, tlahir = %s WHERE id_pasien = %s", (nama, alamat, nohp, tlahir, id_pasien))
+            cur.execute("UPDATE pasien SET namapas = %s, jk = %s, tlahir = %s, tempatlahir = %s, status = %s, agama = %s, pekerjaan = %s, pendidikan = %s, keluarga = %s, namakel = %s, pekerjaankel = %s, nohp = %s, email = %s, provinsi = %s, kota = %s, kec = %s, desa = %s, alamat = %s, tdaftar = %s, unit = %s, dokter = %s, jam = %s, bayar = %s, nokartu = %s, pesan = %s WHERE NIK = %s", (namapas, jk, tlahir, tempatlahir, status, agama, pekerjaan, pendidikan, keluarga, namakel, pekerjaankel, nohp, email, provinsi, kota, kec, desa, alamat, tdaftar, unit, dokter, jam, bayar, nokartu, pesan, id_pasien))
             cnx.commit()
 
             # Close the cursor and connection
@@ -471,29 +460,39 @@ def editpasien(id_pasien):
             cnx.close()
 
             # Redirect to a success page or display a success message
-            return '''
-                <script>
-                alert("Data berhasil disimpan!");
-                window.location.href = "/pasien";
-            </script>
-            '''
+            return redirect(url_for('pasien'))
 
         else :
-            cur.execute("SELECT * FROM tb_pasien WHERE id_pasien = %s", (id_pasien,))
+            cur.execute("SELECT * FROM pasien WHERE NIK = %s", (id_pasien,))
             pasien_tuple = cur.fetchone()
             user_dict = {
-                'id_pasien': pasien_tuple[0],
-                'nama': pasien_tuple[1],
-                'alamat': pasien_tuple[2],
-                'nohp' : pasien_tuple[3],
-                'tlahir' : pasien_tuple[4],
-                }
+                'NIK': pasien_tuple[0],
+                'namapas': pasien_tuple[1],
+                'jk': pasien_tuple[2],
+                'tlahir': pasien_tuple[3],
+                'tempatlahir': pasien_tuple[4],
+                'status': pasien_tuple[5],
+                'agama': pasien_tuple[6],
+                'pekerjaan': pasien_tuple[7],
+                'pendidikan': pasien_tuple[8],
+                'keluarga': pasien_tuple[9],
+                'namakel': pasien_tuple[10],
+                'pekerjaankel': pasien_tuple[11],
+                'nohp': pasien_tuple[12],
+                'email': pasien_tuple[13],
+                'provinsi': pasien_tuple[14],
+                'kota': pasien_tuple[15],
+                'kec': pasien_tuple[16],
+                'desa': pasien_tuple[17],
+                'alamat': pasien_tuple[18],
+                'tdaftar': pasien_tuple[19]
+            }
 
         cur.close()
         cnx.close()
 
         # Return the user data
-        return render_template('/admin/edit_pasien.html', pasien=user_dict, doctor_name=doctor_name, level=level, level_user=level_user)
+        return render_template('/admin/edit_pasien.html', pasien=user_dict)
 
 
     except mysql.connector.Error as err:
@@ -501,12 +500,8 @@ def editpasien(id_pasien):
         return "Error fetching user data", 500
 
 @app.route('/editpasien1/<int:id_pasien>', methods=['GET', 'POST'])
+@levels_required('Operator')
 def editpasien1(id_pasien):
-    username = session['username']
-    user = User.query.filter_by(username=username).first()
-    doctor_name = user.nm_user
-    level=session['level']
-    level_user=level
     try:
         cnx = mysql.connector.connect(
             user='root',
@@ -517,13 +512,34 @@ def editpasien1(id_pasien):
         cur = cnx.cursor()
         if request.method == 'POST':
             # Get the updated values from the form
-            nama = request.form['nama']
-            alamat = request.form['alamat']
-            nohp = request.form['nohp']
+            namapas = request.form['namapas']
+            jk = request.form['jk']
             tlahir = request.form['tlahir']
+            tempatlahir = request.form['tempatlahir']
+            status = request.form['status']
+            agama = request.form['agama']
+            pekerjaan = request.form['pekerjaan']
+            pendidikan = request.form['pendidikan']
+            keluarga = request.form['keluarga']
+            namakel = request.form['namakel']
+            pekerjaankel = request.form['pekerjaankel']
+            nohp = request.form['nohp']
+            email = request.form['email']
+            provinsi = request.form['provinsi']
+            kota = request.form['kota']
+            kec = request.form['kec']
+            desa = request.form['desa']
+            alamat = request.form['alamat']
+            tdaftar = request.form['tdaftar']
+            unit = request.form['unit']
+            dokter = request.form['dokter']
+            jam = request.form['jam']
+            bayar = request.form['bayar']
+            nokartu = request.form['nokartu']
+            pesan = request.form['pesan']
 
             # Update the user data in the database
-            cur.execute("UPDATE tb_pasien SET nama = %s, alamat = %s, nohp = %s, tlahir = %s WHERE id_pasien = %s", (nama, alamat, nohp, tlahir, id_pasien))
+            cur.execute("UPDATE pasien SET namapas = %s, jk = %s, tlahir = %s, tempatlahir = %s, status = %s, agama = %s, pekerjaan = %s, pendidikan = %s, keluarga = %s, namakel = %s, pekerjaankel = %s, nohp = %s, email = %s, provinsi = %s, kota = %s, kec = %s, desa = %s, alamat = %s, tdaftar = %s, unit = %s, dokter = %s, jam = %s, bayar = %s, nokartu = %s, pesan = %s WHERE NIK = %s", (namapas, jk, tlahir, tempatlahir, status, agama, pekerjaan, pendidikan, keluarga, namakel, pekerjaankel, nohp, email, provinsi, kota, kec, desa, alamat, tdaftar, unit, dokter, jam, bayar, nokartu, pesan, id_pasien))
             cnx.commit()
 
             # Close the cursor and connection
@@ -531,29 +547,39 @@ def editpasien1(id_pasien):
             cnx.close()
 
             # Redirect to a success page or display a success message
-            return '''
-                <script>
-                alert("Data berhasil disimpan!");
-                window.location.href = "/pasien1";
-            </script>
-            '''
+            return redirect(url_for('pasien1'))
 
         else :
-            cur.execute("SELECT * FROM tb_pasien WHERE id_pasien = %s", (id_pasien,))
+            cur.execute("SELECT * FROM pasien WHERE NIK = %s", (id_pasien,))
             pasien_tuple = cur.fetchone()
             user_dict = {
-                'id_pasien': pasien_tuple[0],
-                'nama': pasien_tuple[1],
-                'alamat': pasien_tuple[2],
-                'nohp' : pasien_tuple[3],
-                'tlahir' : pasien_tuple[4],
-                }
+                'NIK': pasien_tuple[0],
+                'namapas': pasien_tuple[1],
+                'jk': pasien_tuple[2],
+                'tlahir': pasien_tuple[3],
+                'tempatlahir': pasien_tuple[4],
+                'status': pasien_tuple[5],
+                'agama': pasien_tuple[6],
+                'pekerjaan': pasien_tuple[7],
+                'pendidikan': pasien_tuple[8],
+                'keluarga': pasien_tuple[9],
+                'namakel': pasien_tuple[10],
+                'pekerjaankel': pasien_tuple[11],
+                'nohp': pasien_tuple[12],
+                'email': pasien_tuple[13],
+                'provinsi': pasien_tuple[14],
+                'kota': pasien_tuple[15],
+                'kec': pasien_tuple[16],
+                'desa': pasien_tuple[17],
+                'alamat': pasien_tuple[18],
+                'tdaftar': pasien_tuple[19]
+            }
 
         cur.close()
         cnx.close()
 
         # Return the user data
-        return render_template('/operator/edit_pasien.html', pasien=user_dict, doctor_name=doctor_name, level=level, level_user=level_user)
+        return render_template('/operator/edit_pasien.html', pasien=user_dict)
 
 
     except mysql.connector.Error as err:
@@ -750,7 +776,7 @@ def edit_riwayat(id_riwayat):
             alamat = request.form['alamat']
 
             # Update the user data in the database
-            cur.execute("UPDATE riwayat SET id_pasien = %s, nama = %s, nohp = %s, tlahir = %s, tscreen = %s, diagnosa = %s, alamat = %s WHERE id_riwayat = %s", (id_pasien, nama, nohp, tlahir, tscreen, diagnosa, alamat, id_riwayat))
+            cur.execute("UPDATE riwayat SET NIK = %s, namapas = %s, nohp = %s, tlahir = %s, tscreen = %s, diagnosa = %s, alamat = %s WHERE id_riwayat = %s", (id_pasien, nama, nohp, tlahir, tscreen, diagnosa, alamat, id_riwayat))
             cnx.commit()
 
             # Close the cursor and connection
@@ -765,8 +791,8 @@ def edit_riwayat(id_riwayat):
             riwayat_tuple = cur.fetchone()
             riwayat_dict = {
                 'id_riwayat': riwayat_tuple[0],
-                'id_pasien': riwayat_tuple[1],
-                'nama': riwayat_tuple[2],
+                'NIK': riwayat_tuple[1],
+                'namapas': riwayat_tuple[2],
                 'nohp': riwayat_tuple[3],
                 'tlahir': riwayat_tuple[4],
                 'tscreen': riwayat_tuple[5],
@@ -805,7 +831,7 @@ def edit_riwayat2(id_riwayat):
             alamat = request.form['alamat']
 
             # Update the user data in the database
-            cur.execute("UPDATE riwayat SET id_pasien = %s, nama = %s, nohp = %s, tlahir = %s, tscreen = %s, diagnosa = %s, alamat = %s WHERE id_riwayat = %s", (id_pasien, nama, nohp, tlahir, tscreen, diagnosa, alamat, id_riwayat))
+            cur.execute("UPDATE riwayat SET NIK = %s, namapas = %s, nohp = %s, tlahir = %s, tscreen = %s, diagnosa = %s, alamat = %s WHERE id_riwayat = %s", (id_pasien, nama, nohp, tlahir, tscreen, diagnosa, alamat, id_riwayat))
             cnx.commit()
 
             # Close the cursor and connection
@@ -813,15 +839,15 @@ def edit_riwayat2(id_riwayat):
             cnx.close()
 
             # Redirect to a success page or display a success message
-            return redirect(url_for('riwayat2'))
+            return redirect(url_for('riwayat'))
 
         else :
             cur.execute("SELECT * FROM riwayat WHERE id_riwayat = %s", (id_riwayat,))
             riwayat_tuple = cur.fetchone()
             riwayat_dict = {
                 'id_riwayat': riwayat_tuple[0],
-                'id_pasien': riwayat_tuple[1],
-                'nama': riwayat_tuple[2],
+                'NIK': riwayat_tuple[1],
+                'namapas': riwayat_tuple[2],
                 'nohp': riwayat_tuple[3],
                 'tlahir': riwayat_tuple[4],
                 'tscreen': riwayat_tuple[5],
@@ -894,6 +920,84 @@ def cetak_riwayat2(id_riwayat):
     cur.close()
     cnx.close()
     return render_template('/dokter/print_riwayat.html', riwayat=riwayat_dict, current_date=current_date)    
+
+@app.route("/cetakpasien/<int:id_pasien>", methods=['GET', 'POST'])
+def cetakpasien(id_pasien):
+    cnx = mysql.connector.connect(
+            user='root',
+            password='',
+            host='localhost',
+            database='db_mata'
+        )
+    cur = cnx.cursor()
+    cur.execute("SELECT * FROM pasien WHERE NIK = %s", (id_pasien,))
+    pasien_tuple = cur.fetchone()
+    pasien_dict = {
+            'NIK': pasien_tuple[0],
+            'namapas': pasien_tuple[1],
+            'jk': pasien_tuple[2],
+            'tlahir': pasien_tuple[3],
+            'tempatlahir': pasien_tuple[4],
+            'status': pasien_tuple[5],
+            'agama': pasien_tuple[6],
+            'pekerjaan': pasien_tuple[7],
+            'pendidikan': pasien_tuple[8],
+            'keluarga': pasien_tuple[9],
+            'namakel': pasien_tuple[10],
+            'pekerjaankel': pasien_tuple[11],
+            'nohp': pasien_tuple[12],
+            'email': pasien_tuple[13],
+            'provinsi': pasien_tuple[14],
+            'kota': pasien_tuple[15],
+            'kec': pasien_tuple[16],
+            'desa': pasien_tuple[17],
+            'alamat': pasien_tuple[18],
+            'tdaftar': pasien_tuple[19]
+        }
+    # Fetch all results before closing the cursor and connection
+    cur.fetchall()  # Add this line to fetch all results
+    cur.close()
+    cnx.close()
+    return render_template('/admin/print_pasien.html', pasien=pasien_dict)
+
+@app.route("/cetakpas/<int:id_pasien>", methods=['GET', 'POST'])
+def cetakpas(id_pasien):
+    cnx = mysql.connector.connect(
+            user='root',
+            password='',
+            host='localhost',
+            database='db_mata'
+        )
+    cur = cnx.cursor()
+    cur.execute("SELECT * FROM pasien WHERE NIK = %s", (id_pasien,))
+    pasien_tuple = cur.fetchone()
+    pasien_dict = {
+            'NIK': pasien_tuple[0],
+            'namapas': pasien_tuple[1],
+            'jk': pasien_tuple[2],
+            'tlahir': pasien_tuple[3],
+            'tempatlahir': pasien_tuple[4],
+            'status': pasien_tuple[5],
+            'agama': pasien_tuple[6],
+            'pekerjaan': pasien_tuple[7],
+            'pendidikan': pasien_tuple[8],
+            'keluarga': pasien_tuple[9],
+            'namakel': pasien_tuple[10],
+            'pekerjaankel': pasien_tuple[11],
+            'nohp': pasien_tuple[12],
+            'email': pasien_tuple[13],
+            'provinsi': pasien_tuple[14],
+            'kota': pasien_tuple[15],
+            'kec': pasien_tuple[16],
+            'desa': pasien_tuple[17],
+            'alamat': pasien_tuple[18],
+            'tdaftar': pasien_tuple[19]
+        }
+    # Fetch all results before closing the cursor and connection
+    cur.fetchall()  # Add this line to fetch all results
+    cur.close()
+    cnx.close()
+    return render_template('/operator/print_pasien.html', pasien=pasien_dict)
 
 @app.route("/edit_riwayatop/<int:id_riwayat>", methods=['GET', 'POST'])
 def edit_riwayatop(id_riwayat):
@@ -1054,15 +1158,15 @@ def predict():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
             nama_pasien = request.form['nama_pasien']
-            cursor.execute("SELECT * FROM tb_pasien WHERE nama =%s", (nama_pasien,))
+            cursor.execute("SELECT * FROM pasien WHERE namapas =%s", (nama_pasien,))
             pasien_data = cursor.fetchone()
-            
+        
             if pasien_data:
                 id_pasien = pasien_data[0]
                 nama_pasien = pasien_data[1]
-                alamat = pasien_data[2]
-                nohp = pasien_data[3]
-                tlahir = pasien_data[4]
+                alamat = pasien_data[18]
+                nohp = pasien_data[12]
+                tlahir = pasien_data[3]
                 success = True
             else:
                 return 'Nama Pasien tidak ditemukan'
@@ -1117,15 +1221,15 @@ def predict1():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
             nama_pasien = request.form['nama_pasien']
-            cursor.execute("SELECT * FROM tb_pasien WHERE nama =%s", (nama_pasien,))
+            cursor.execute("SELECT * FROM pasien WHERE namapas =%s", (nama_pasien,))
             pasien_data = cursor.fetchone()
-            
+        
             if pasien_data:
                 id_pasien = pasien_data[0]
                 nama_pasien = pasien_data[1]
-                alamat = pasien_data[2]
-                nohp = pasien_data[3]
-                tlahir = pasien_data[4]
+                alamat = pasien_data[18]
+                nohp = pasien_data[12]
+                tlahir = pasien_data[3]
                 success = True
             else:
                 return 'Nama Pasien tidak ditemukan'
