@@ -176,34 +176,38 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
-                                DATA PENGGUNA
+                                <div class="card-header no-print">
+                                DATA PASIEN
                                 </div>
-                                <div class="card-body">
-                                    <a href="{{ url_for('tambahpasien') }}" class="btn btn-md btn-success" style="margin-bottom: 10px">TAMBAH DATA</a>
-                                    <button class="btn btn-md btn-success no-print" style="margin-bottom: 10px" onclick="window.print()">Print this page</button>
-                                    <table class="table table-bordered" id="myTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">NO.</th>
-                                                <th scope="col">NAMA LENGKAP</th>
-                                                <th scope="col">Alamat</th>
-                                                <th scope="col">NO HP</th>
-                                                <th scope="col">Tanggal Lahir</th>
-                                                <th scope="col" class="no-print">AKSI</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for pasien in pasiens %}
-                                            <tr>
-                                                <td>{{ loop.index }}</td>
-                                                <td>{{ pasien.nama }}</td>
-                                                <td>{{ pasien.alamat }}</td>
-                                                <td>{{ pasien.nohp }}</td>
-                                                <td>{{ pasien.tlahir }}</td>
-                                                <td class="no-print">
-                                                    <a href="{{ url_for(endpoint='editpasien', id_pasien=pasien.id_pasien) }}" class="btn btn-sm btn-primary edit-button"><i class="fa fa-edit"></i></a>
-                                                    <a href="{{ url_for(endpoint='hapuspasien', id_pasien=pasien.id_pasien) }}" class="btn btn-sm btn-danger delete-button" data-id-pasien="{{ pasien.id_pasien }}"><i class="fa fa-trash"></i></a>
+                            <div class="card-body">
+                            <button class="btn btn-md btn-success no-print" style="margin-bottom: 10px" onclick="window.print()">Print this page</button>
+                            <table class="table table-bordered" style="table-layout: auto; width: 100%;" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col">NO.</th>
+                    <th scope="col">NIK</th>
+                    <th scope="col">NAMA LENGKAP</th>
+                    <th scope="col">Jenik Kelamin</th>
+                    <th scope="col">Alamat</th>
+                    <th scope="col">NO HP</th>
+                    <th scope="col">Tempat Tanggal Lahir</th>
+                    <th scope="col" class="no-print">AKSI</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pasien in pasiens %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ pasien.NIK }}</td>
+                    <td>{{ pasien.namapas }}</td>
+                    <td>{{ pasien.jk }}</td>
+                    <td>{{ pasien.kota }}</td>
+                    <td>{{ pasien.nohp }}</td>
+                    <td>{{ pasien.tempatlahir }},{{ pasien.tlahir }}</td>
+                    <td class="no-print">
+                                                    <a href="{{ url_for(endpoint='editpasien', id_pasien=pasien.NIK) }}" class="btn btn-sm btn-primary edit-button"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ url_for(endpoint='hapuspasien', id_pasien=pasien.NIK) }}" class="btn btn-sm btn-danger delete-button" data-id-pasien="{{ pasien.NIK }}"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{ url_for(endpoint='cetakpasien', id_pasien=pasien.NIK) }}" class="btn btn-sm btn-success print-button"><i class="fa fa-print"></i></a>
                                                 </td>
                                             </tr>
                                             {% endfor %}

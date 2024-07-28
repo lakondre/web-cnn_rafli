@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Pasien</title>
+  <style>
+    .keterangan{
+        text-align: left;
+        font-style:unset;
+        font-size: 20px;
+    }
+    .logo{
+        width: 40%;
+        align-content: flex-start;
+    }
+    .underline-header {
+    border-bottom: 5px solid black;
+    padding-bottom: 5px;
+    text-align: center;
+    }
+    .tanggal{
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+
+    <h1 class="underline-header"><img class="logo" src="/static/assets/img/logo.png">   Data Pasien</h1>
+  <table>
+    <tr>
+        <td class="keterangan">NIK</td>
+        <td class="keterangan">: &nbsp;</td>
+        <td class="keterangan">{{ pasien.NIK }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Nama Lengkap</td>
+      <td class="keterangan">: &nbsp;</td>
+      <td class="keterangan">{{ pasien.namapas }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Jenis Kelamin</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.jk }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Tempat Lahir</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.tempatlahir }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Tanggal Lahir</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.tlahir }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Status</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.status }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Agama</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.agama }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Pekerjaan</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.pekerjaan }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Pendidikan</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.pendidikan }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Keluarga</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.keluarga }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Nama Keluarga</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.namakel }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Pekerjaan Keluarga</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.pekerjaankel }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">No HP</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.nohp }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Email</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.email }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Provinsi</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.provinsi }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Kota</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.kota }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Kecamatan</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.kec }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Desa</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.desa }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Alamat</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.alamat }}</td>
+    </tr>
+    <tr>
+      <td class="keterangan">Tanggal Daftar</td>
+      <td class="keterangan">:</td>
+      <td class="keterangan">{{ pasien.tdaftar }}</td>
+    </tr>
+  </table>
+  <script>
+    window.print();
+  </script>
+</body>
+</html>

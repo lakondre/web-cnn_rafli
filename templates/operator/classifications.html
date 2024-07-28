@@ -212,40 +212,38 @@
                                 </div>
                                 <div class="card-body">
                                     <form action="/save_riwayat1" method="post" enctype="multipart/form-data">
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">ID Pasien:</label></div>
-                                            <div class="col-12 col-md-9"><input type="text" id="id_pasien" name="id_pasien" value="{{ id_pasien }}" class="form-control" required readonly>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="nama_pasien">ID Pasien:</label>
+                                            <input type="text" id="id_pasien" name="id_pasien" value="{{ id_pasien }}" class="form-control" readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">Nama:</label></div>
-                                            <div class="col-12 col-md-9"><input type="text" id="nama_pasien" name="nama_pasien" value="{{ nama_pasien }}" class="form-control" readonly>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="nama_pasien">Nama Pasien:</label>
+                                            <input type="text" id="nama_pasien" name="nama_pasien" value="{{ nama_pasien }}" class="form-control" readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">Alamat:</label></div>
-                                            <div class="col-12 col-md-9"><input type="text" id="alamat" name="alamat" value="{{ alamat }}" class="form-control" readonly>
-                                            </div>
+
+                                        <div class="form-group">
+                                            <label for="nama_pasien">Alamat:</label>
+                                            <input type="text" id="alamat" name="alamat" value="{{ alamat }}" class="form-control" readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">No HP:</label></div>
-                                            <div class="col-12 col-md-9"><input type="text" id="nohp" name="nohp" value="{{ nohp }}" class="form-control" readonly>
-                                            </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="nama_pasien">Nomor Handphone:</label>
+                                            <input type="text" id="nohp" name="nohp" value="{{ nohp }}" class="form-control" readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">tanggal lahir:</label></div>
-                                            <div class="col-12 col-md-9"><input type="date" id="tlahir" name="tlahir" value="{{ tlahir }}" class="form-control" readonly>
-                                            </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="nama_pasien">Tanggal Lahir:</label>
+                                            <input type="date" id="tlahir" name="tlahir" value="{{ tlahir }}" class="form-control" readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">Tanggal Deteksi:</label></div>
-                                            <div class="col-12 col-md-9"><input type="date" id="tscreen" name="tscreen" value="{{ current_date }}" class="form-control" required readonly>
-                                            </div>
+
+                                        <div class="form-group">
+                                            <label for="tanggal_screening">Tanggal Screening:</label>
+                                            <input type="date" id="tscreen" name="tscreen" value="{{ current_date }}" class="form-control" required readonly>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col col-md-3"><label for="file-input" class=" form-control-label">Diagnosa:</label></div>
-                                            <div class="col-12 col-md-9"><input type="text" name="diagnosis" value="{{ predictionnasnet }}" class="form-control" required readonly>
-                                            </div>
+            
+                                        <div class="form-group">
+                                            <label for="hasil_diagnosa">Hasil Diagnosa:</label>
+                                            <input type="text" name="diagnosis" value="{{ result }}" class="form-control" required readonly>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3" style="margin-left: 15px;"></div>

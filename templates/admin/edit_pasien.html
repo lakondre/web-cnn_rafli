@@ -183,10 +183,115 @@
                                             Edit Pasien
                                         </div>
                                         <div class="card-body">
-                                            <form method="POST" action="{{ url_for('editpasien', id_pasien=pasien.id_pasien) }}">
+                                            <form method="POST" action="{{ url_for('editpasien', id_pasien=pasien.NIK) }}">
                                                 <div class="form-group">
-                                                    <label for="nama">Nama:</label>
-                                                    <input type="text" name="nama" value="{{ pasien.nama }}" class="form-control" required>
+                                                    <label for="nik">NIK:</label>
+                                                    <input type="text" name="nik" value="{{ pasien.NIK }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="namapas">Nama Pasien:</label>
+                                                    <input type="text" name="namapas" value="{{ pasien.namapas }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="jk">Jenis Kelamin:</label>
+                                                    <input type="text" name="jk" value="{{ pasien.jk }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="tlahir">Tanggal Lahir:</label>
+                                                    <input type="date" name="tlahir" value="{{ pasien.tlahir }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="tempatlahir">Tempat Lahir:</label>
+                                                    <input type="text" name="tempatlahir" value="{{ pasien.tempatlahir }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="status">Status:</label>
+                                                    <select class="form-control">
+                                                        <option value="{{ pasien.status }}" class="form-control"> {{ pasien.status }} </option>                                                        
+                                                        <option value="Menikah" class="form-control"> Menikah </option>
+                                                        <option value="Belum Menikah" class="form-control"> Belum Menikah </option>
+                                                        <option value="Janda" class="form-control"> Janda </option>
+                                                        <option value="Duda" class="form-control"> Duda </option>
+                                                    </select>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="agama">Agama:</label>
+                                                    <select class="form-control">
+                                                        <option value="{{ pasien.agama }}" class="form-control"> {{ pasien.agama}} </option>                                                        
+                                                        <option value="Islam" class="form-control"> Islam </option>
+                                                        <option value="Kristen" class="form-control"> Kristen </option>
+                                                        <option value="Hindu" class="form-control"> Hindu </option>
+                                                        <option value="Budha" class="form-control"> Budha </option>
+                                                        <option value="Katholik" class="form-control"> Katholik </option>
+                                                        <option value="Konghuchu" class="form-control"> Konghuchu </option>
+                                                    </select>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="pekerjaan">Pekerjaan:</label>
+                                                    <input type="text" name="pekerjaan" value="{{ pasien.pekerjaan }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="pendidikan">Pendidikan:</label>
+                                                    <input type="text" name="pendidikan" value="{{ pasien.pendidikan }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="keluarga">Keluarga Pendamping:</label>
+                                                    <select class="form-control">
+                                                        <option value="{{ pasien.keluarga }}" class="form-control"> {{ pasien.keluarga }} </option>                                                        
+                                                        <option value="Istri" class="form-control"> Istri </option>
+                                                        <option value="Saudara" class="form-control"> Saudara </option>
+                                                        <option value="Ayah" class="form-control"> Ayah </option>
+                                                        <option value="Ibu" class="form-control"> Ibu </option>
+                                                    </select>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="namakel">Nama Keluarga:</label>
+                                                    <input type="text" name="namakel" value="{{ pasien.namakel }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="pekerjaankel">Pekerjaan Keluarga:</label>
+                                                    <input type="text" name="pekerjaankel" value="{{ pasien.pekerjaankel }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="nohp">No. HP:</label>
+                                                    <input type="text" name="nohp" value="{{ pasien.nohp }}" maxlength="13" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="email">Email:</label>
+                                                    <input type="email" name="email" value="{{ pasien.email }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="provinsi">Provinsi:</label>
+                                                    <input type="text" name="provinsi" value="{{ pasien.provinsi }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="kota">Kota:</label>
+                                                    <input type="text" name="kota" value="{{ pasien.kota }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="kec">Kecamatan:</label>
+                                                    <input type="text" name="kec" value="{{ pasien.kec }}" class="form-control" required>
+                                                </div>
+                    
+                                                <div class="form-group">
+                                                    <label for="desa">Desa:</label>
+                                                    <input type="text" name="desa" value="{{ pasien.desa }}" class="form-control" required>
                                                 </div>
                     
                                                 <div class="form-group">
@@ -195,15 +300,9 @@
                                                 </div>
                     
                                                 <div class="form-group">
-                                                    <label for="nohp">No HP:</label>
-                                                    <input type="text" name="nohp" value="{{ pasien.nohp }}" maxlength="13" class="form-control" required>
+                                                    <label for="tdaftar">Tanggal Daftar:</label>
+                                                    <input type="date" name="tdaftar" value="{{ pasien.tdaftar }}" class="form-control" required>
                                                 </div>
-                    
-                                                <div class="form-group">
-                                                    <label for="tlahir">Tanggal Lahir:</label>
-                                                    <input type="date" name="tlahir" value="{{ pasien.tlahir }}" class="form-control" required>
-                                                </div>
-                    
                                                 <button type="submit" class="btn btn-success">Save Changes</button>
                                                 <a href="{{ url_for('pasien') }}" class="btn btn-warning">Cancel</a>
                                             </form>
